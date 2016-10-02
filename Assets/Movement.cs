@@ -26,8 +26,8 @@ public class Movement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-//        m_rigidbody.velocity = _vel;
-	
+        m_rigidbody.velocity = _vel;
+	    
 
         PositionChanging();
 	}
