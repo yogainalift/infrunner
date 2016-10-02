@@ -492,7 +492,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e7fa5f836cddac4cabf16c0259e8c5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lerpSpeed: 14
+  lerpSpeed: 10
+  myVelocity: 50
 --- !u!114 &1920683803
 MonoBehaviour:
   m_ObjectHideFlags: 0
