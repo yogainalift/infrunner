@@ -6,11 +6,19 @@ public class Movement : MonoBehaviour {
 
     [SerializeField]
     public float lerpSpeed;
+
+
+        enum POS
+        {
+            POSA,
+            POSB,
+            POSC
+        };
+
     
 	Rigidbody m_rigidbody;
     private readonly Vector3 _vel = new Vector3(0,0,50);
 
-	Vector3 oldPosition;
 	private Vector3 newPosition;
 
     void Awake() {
@@ -20,13 +28,12 @@ public class Movement : MonoBehaviour {
     // Use this for initialization
     void Start () {
         m_rigidbody = GetComponent<Rigidbody>();
-		newPosition = new Vector3(oldPosition.x +2.7f, oldPosition.y,oldPosition.z);
-		oldPosition = m_rigidbody.transform.position;
+
     }
 	
 	// Update is called once per frame
 	void Update () {
-        m_rigidbody.velocity = _vel;
+        //m_rigidbody.velocity = _vel;
 	    
 
         PositionChanging();
@@ -36,20 +43,25 @@ public class Movement : MonoBehaviour {
     {
         Vector3 pos = transform.position;
         Vector3 positionA = new Vector3( -2.7f, pos.y, pos.z );
-        Vector3 positionB = new Vector3(0, pos.y, pos.z);
-        Vector3 positionC = new Vector3( pos.x + 2.7f, pos.y, pos.z );
+        Vector3 positionB = new Vector3(0.01f, pos.y, pos.z);
+        Vector3 positionC = new Vector3( 2.7f, pos.y, pos.z );
 
-        if ( Input.GetKeyDown( KeyCode.Q ) && pos.x <= 0 ) {
+        if ( Input.GetKeyDown( KeyCode.Q ) && pos.x <= 0.02f )
+        {
             newPosition = positionA;
         }
-        else if (Input.GetKeyDown(KeyCode.Q) && pos.x > 0)
+        else if (Input.GetKeyDown(KeyCode.Q) && pos.x > 0.00f )
         {
             newPosition = positionB;
         }
-        else if (Input.GetKeyDown(KeyCode.E))
+        else if ( Input.GetKeyDown( KeyCode.E ) && pos.x >= 0.00f ) {
+            newPosition = positionC;
+        }
+        else if (Input.GetKeyDown(KeyCode.E) && pos.x < 0.00f )
         {
             newPosition = positionB;
         }
+
 
         transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * lerpSpeed);
     }
