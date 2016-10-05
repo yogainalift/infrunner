@@ -3,9 +3,10 @@
 public class PlayerRespawn : MonoBehaviour {
 
     // Use this for initialization
-    void Start () {
-
-	}
+    void Start ()
+    {
+        
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -14,8 +15,9 @@ public class PlayerRespawn : MonoBehaviour {
 
     void respawn()
     {
-        // Player respawns at (0,0,0)
-        transform.position = Vector3.zero;
+        // Player respawns
+        Vector3 initPos = new Vector3(0, 0.124f, 0);
+        transform.position = initPos;
 
         // Kill all instances of Rock
         Object[] allObjects = FindObjectsOfType(typeof(GameObject));
