@@ -25,7 +25,7 @@ public class RockGenerator : MonoBehaviour {
     {
         if (z - zPreviousRock > minDistance) {
             // The X position of Vector3 can take one of these values: (-3, 0, 3)
-            Vector3 position = new Vector3(Random.Range(-1, 2) * 3, 0.5f, z);
+            Vector3 position = new Vector3(Random.Range(-1, 2) * 2.7f, 0.5f, z);
             Instantiate(GameObject.Find("Rock"), position, Quaternion.identity);
             zPreviousRock = position.z;
         }

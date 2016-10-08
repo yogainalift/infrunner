@@ -49,9 +49,9 @@ public class Movement : MonoBehaviour {
         Vector3 pos = transform.position;
 
         //possible positions (this can probably be improved)
-        Vector3 positionA = new Vector3( -2.7f, pos.y, pos.z);
+        Vector3 positionA = new Vector3( -AMMOUNT, pos.y, pos.z);
         Vector3 positionB = new Vector3(0.0f, pos.y, pos.z);
-        Vector3 positionC = new Vector3( 2.7f, pos.y, pos.z);
+        Vector3 positionC = new Vector3( AMMOUNT, pos.y, pos.z);
 
 
         //detecting input and making changes accordingly
