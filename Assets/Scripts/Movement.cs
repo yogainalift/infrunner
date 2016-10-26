@@ -1,21 +1,14 @@
 ﻿using UnityEngine;
 using System.Linq;
 
+#pragma warning disable 0414 
+
 public class Movement : MonoBehaviour
 {
-    //The Z(forward)-velocity of the player
-    public float myVelocity;
+   
+  
+    private float sideInput;
 
-    private float sideInput, jumpInput;
-
-    public float jumpHeight = 4;
-    public float downAccel = 1f;
-    public float timeToJumpApex = .4f;
-    float jumpVelocity;
-    float gravity;
-    private Vector3 vel;
-
-    public LayerMask ground;
 
     //The speed of the left right movement
     public float LerpSpeed = 20f;
@@ -68,11 +61,7 @@ public class Movement : MonoBehaviour
     {
         myBody = this.GetComponent<Rigidbody>();
 
-        gravity = -(2*jumpHeight)/Mathf.Pow(timeToJumpApex, 2);
-        jumpVelocity = Mathf.Abs(gravity)*timeToJumpApex;
-        print("Gravity: " + gravity + "  Jump Velocity: " + jumpVelocity);
-        sideInput = jumpInput = 0;
-
+        sideInput = 0;
     }
 
     void Update()
@@ -85,7 +74,6 @@ public class Movement : MonoBehaviour
     void GetInput()
     {
         sideInput = Input.GetAxis("Horizontal");
-        jumpInput = Input.GetAxisRaw("Jump");
     }
 
 
@@ -93,29 +81,10 @@ public class Movement : MonoBehaviour
     {
         //finaly perform the lerp and give player speed
         transform.position = Vector3.Lerp(transform.position,
-            new Vector3(newPosition.x, transform.position.y, transform.position.z + (myVelocity/LerpSpeed)),
+            new Vector3(newPosition.x, transform.position.y, transform.position.z),
             Time.deltaTime*LerpSpeed);
-        Jump();
     }
 
-    void Jump()
-    {
-        if ( IsGrounded() && jumpInput > 0) {
-            //give y velocity
-            myBody.velocity = new Vector3( 0, jumpHeight, 0 );
-        }
-        else if (IsGrounded() &&
-                 jumpInput == 0)
-        {
-            //zero out y vel
-            myBody.velocity = new Vector3(0,0,0);
-        }
-        else
-        {
-            //decrease y vel
-            myBody.velocity -= new Vector3( 0, downAccel, 0 );
-        }
-    }
 
     //holds the logic for the player movement
     void PositionChanging()
@@ -159,50 +128,4 @@ public class Movement : MonoBehaviour
         
     }
 
-    private bool IsGrounded()
-    {
-
-        var castDistance = .2f;
-
-        var size = .3f;
-        var halfHeight = .1f;
-
-//        return Physics.Raycast(transform.position, Vector3.down, halfHeight, ground);
-
-        var rays = new[]
-        {
-            new Vector3(0, halfHeight, 0),
-            new Vector3(size, halfHeight, size),
-            new Vector3(-size, halfHeight, -size),
-            new Vector3(-size, halfHeight, size),
-            new Vector3(size, halfHeight, -size),
-            new Vector3(0, halfHeight, size),
-            new Vector3(0, halfHeight, -size),
-            new Vector3(-size, halfHeight, 0),
-            new Vector3(size, halfHeight, 0),
-            new Vector3(size/2, halfHeight, size/2),
-            new Vector3(-size/2, halfHeight, -size/2),
-            new Vector3(-size/2, halfHeight, size/2),
-            new Vector3(size/2, halfHeight, -size/2),
-            new Vector3(0, halfHeight, size/2),
-            new Vector3(0, halfHeight, -size/2),
-            new Vector3(-size/2, halfHeight, 0),
-            new Vector3(size/2, halfHeight, 0),
-            new Vector3(size/3, halfHeight, size/3),
-            new Vector3(-size/3, halfHeight, -size/3),
-            new Vector3(-size/3, halfHeight, size/3),
-            new Vector3(size/3, halfHeight, -size/3),
-            new Vector3(0, halfHeight, size/3),
-            new Vector3(0, halfHeight, -size/3),
-            new Vector3(-size/3, halfHeight, 0),
-            new Vector3(size/3, halfHeight, 0),
-        };
-
-        foreach (var ray in rays)
-        {
-            Debug.DrawLine( transform.position - ray, transform.position - ray - (Vector3.down * castDistance) );
-        }
-
-        return rays.Any(ray => Physics.Raycast(transform.position - ray, Vector3.down, castDistance));
-    }
 }
