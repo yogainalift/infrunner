@@ -36,16 +36,15 @@ public class Controller : RaycastController{
 	}
 
 	void HorizontalCollisions(ref Vector3 velocity) {
-		float directionX = Mathf.Sign (velocity.z);
-		float rayLength = Mathf.Abs (velocity.x) + skinWidth;
+		float rayLength = Mathf.Abs (velocity.z) - transform.localScale.z/1.5f;
 		
 		for (int i = 0; i < horizontalRayCount; i ++) {
-			Vector3 rayOrigin = (directionX == -1)?raycastOrigins.bottomLeft:raycastOrigins.bottomRight;
-			rayOrigin += Vector3.up * (horizontalRaySpacing * i);
+			Vector3 rayOrigin = new Vector3( raycastOrigins.bottomLeft.x , transform.position.y, raycastOrigins.bottomRight.z);
+			rayOrigin += Vector3.right *2 * (horizontalRaySpacing * i);
 			RaycastHit hit;
-			Ray ray = new Ray(rayOrigin, Vector3.forward * directionX * rayLength);
+			Ray ray = new Ray(rayOrigin, Vector3.forward  * rayLength);
 
-			Debug.DrawRay(rayOrigin, Vector3.forward * directionX * rayLength, Color.blue);
+			Debug.DrawRay(rayOrigin, Vector3.forward  * rayLength, Color.blue);
 			
 			if (Physics.Raycast(ray, out hit, rayLength, collisionMask)){
 
@@ -62,24 +61,18 @@ public class Controller : RaycastController{
 					}
 
 					float distanceToSlopeStart = 0;
-					if (slopeAngle != collisions.slopeAngleOld) {
-						distanceToSlopeStart = hit.distance-skinWidth;
-						velocity.x -= distanceToSlopeStart * directionX;
-					}
 					ClimbSlope(ref velocity, slopeAngle);
-					velocity.x += distanceToSlopeStart * directionX;
 				}
 
 				if (!collisions.climbingSlope || slopeAngle > maxClimbAngle) {
-					velocity.x = (hit.distance - skinWidth) * directionX;
 					rayLength = hit.distance;
 					
 					if (collisions.climbingSlope) {
 						velocity.y = Mathf.Tan(collisions.slopeAngle * Mathf.Deg2Rad) * Mathf.Abs(velocity.x);
 					}
 					
-					collisions.left = directionX == -1;
-					collisions.right = directionX == 1;
+					collisions.left = true;
+					collisions.right = false;
 				}
 
 			
@@ -92,8 +85,8 @@ public class Controller : RaycastController{
 		float rayLength = Mathf.Abs(velocity.y) + skinWidth;
 
 		for (int i=0 ; i< verticalRayCount ; i++){
-			Vector3 rayOrigin = (directionY == -1)?raycastOrigins.bottomLeft:raycastOrigins.topLeft;
-			rayOrigin += Vector3.right * (verticalRaySpacing * i+ velocity.x);
+			Vector3 rayOrigin = (directionY == -1) ? new Vector3( transform.position.x, raycastOrigins.bottomLeft.y, raycastOrigins.bottomLeft.z ):new Vector3( transform.position.x, raycastOrigins.topLeft.y, raycastOrigins.topLeft.z );
+			rayOrigin += Vector3.back * 2 * (verticalRaySpacing * i+ velocity.x);
 			RaycastHit hit;
 			Ray ray = new Ray(rayOrigin, Vector3.up * directionY);
 

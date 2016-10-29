@@ -49,7 +49,7 @@ public class PlayerPhysics : MonoBehaviour{
 			float y = p.y+c.y+s.y/2 * dir; //bottom of myCollider
 
 			ray = new Ray(new Vector2(x,y), new Vector2(0,dir));
-			//Debug.DrawRay(ray.origin, ray.direction);
+//			Debug.DrawRay(ray.origin, ray.direction, Color.green);
 			if (Physics.Raycast(ray,out hit, Mathf.Abs(deltaY) + skin, collisionMask)){
 				float dst = Vector3.Distance(ray.origin, hit.point);
 				if (dst>skin){
@@ -72,7 +72,7 @@ public class PlayerPhysics : MonoBehaviour{
 			float y = p.y+c.y - s.y/2 + s.y/(collisionDivisionY-1) * i;
 			
 			ray = new Ray(new Vector2(x,y), new Vector2(dir,0));
-			//Debug.DrawRay(ray.origin, ray.direction);
+//			Debug.DrawRay(ray.origin, ray.direction, Color.yellow);
 			if (Physics.Raycast(ray,out hit, Mathf.Abs(deltaX) + skin, collisionMask)){
 				float dst = Vector3.Distance(ray.origin, hit.point);
 				if (dst>skin){

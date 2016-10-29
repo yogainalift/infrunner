@@ -9,11 +9,12 @@ public class Player : Entity
     //The speed of the left right movement
     public float LerpSpeed = 20f;
 
-
+    //Speed of jump and jumpheight
     public float jumpHeight = 4;
     public float timeToJumpApex = .4f;
     float accelerationTimeAirborne = .05f;
     float accelerationTimeGrounded = .05f;
+
 
     float gravity;
     float jumpVelocity;
@@ -24,6 +25,7 @@ public class Player : Entity
 
     Controller controller;
 
+
     public AudioSource landingSound; //NOT IMPLEMENTED YET
     //if (velocity.y < -15){
     //    landingSound.mute = false
@@ -33,7 +35,6 @@ public class Player : Entity
 //    public Image healthBar;
 //    public Text healthText;
 //    public float maxHealth;
-
 
     private float sideInput;
     //The x distance for left-right positions

@@ -400,7 +400,7 @@ Prefab:
     - target: {fileID: 114000013450545866, guid: 8760b8b2853ce18489c9299e0237a3bc,
         type: 2}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1000012642680192, guid: 8760b8b2853ce18489c9299e0237a3bc, type: 2}
       propertyPath: m_Layer
