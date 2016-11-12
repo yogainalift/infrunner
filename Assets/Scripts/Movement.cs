@@ -3,17 +3,13 @@ using System.Linq;
 
 public class Movement : MonoBehaviour
 {
+    /**
+     * Ground stuff 
+     * 
+     *
+     */
     //The Z(forward)-velocity of the player
     public float myVelocity;
-
-    private float sideInput, jumpInput;
-
-    public float jumpHeight = 4;
-    public float downAccel = 1f;
-    public float timeToJumpApex = .4f;
-    float jumpVelocity;
-    float gravity;
-    private Vector3 vel;
 
     public LayerMask ground;
 
@@ -23,7 +19,17 @@ public class Movement : MonoBehaviour
     //The x distance for left-right positions
     private static float AMMOUNT = 2.7f;
 
- 
+
+    /**
+             * Jump stuff 
+             *
+             * 
+    */
+    public float jumpHeight = 4;
+    public float JumpSpeed = 5f;
+    [Range(0.5f, 3)] public float FloatTime = 2f;
+    public float downAccel = 1f;
+
 
     //enum that holds possible positions
     public enum POS
@@ -36,10 +42,10 @@ public class Movement : MonoBehaviour
 
     Rigidbody myBody;
 
-//    private bool isJumping;
+    private bool isJumping;
 //    private bool wasGrounded;
-    private float lastGroundedTime;
-    private float lastJumpTime;
+    private float jumpTime;
+    private float timeOfJump;
 
     //initial position
     public POS myPos = POS.CENTER;
@@ -68,24 +74,60 @@ public class Movement : MonoBehaviour
     {
         myBody = this.GetComponent<Rigidbody>();
 
-        gravity = -(2*jumpHeight)/Mathf.Pow(timeToJumpApex, 2);
-        jumpVelocity = Mathf.Abs(gravity)*timeToJumpApex;
-        print("Gravity: " + gravity + "  Jump Velocity: " + jumpVelocity);
-        sideInput = jumpInput = 0;
 
+        jumpTime = 0f;
     }
 
     void Update()
     {
         //calling the right left movement procedure
-        GetInput();
         PositionChanging();
-    }
 
-    void GetInput()
-    {
-        sideInput = Input.GetAxis("Horizontal");
-        jumpInput = Input.GetAxisRaw("Jump");
+
+        //if player performed jump action
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+        {
+            //if not already jumping
+            if (!isJumping)
+            {
+                isJumping = !isJumping;
+                jumpTime = FloatTime;
+            }
+        }
+
+        if (jumpTime > FloatTime/1.5f)
+        {
+            myBody.useGravity = false;
+            transform.position = Vector3.Lerp(transform.position,
+                new Vector3(transform.position.x, jumpHeight, transform.position.z), Time.deltaTime*JumpSpeed);
+
+            jumpTime -= Time.deltaTime;
+        }
+        else if (jumpTime > FloatTime/5)
+        {
+            transform.position = Vector3.Lerp(transform.position,
+                new Vector3(transform.position.x, 0.1f, transform.position.z), Time.deltaTime*downAccel);
+
+
+            /**
+             * IDEA
+             * 
+             * 
+             * 
+             * Receive jump help from pet underwater 
+             * 
+             * 
+             * 
+             * IDEA
+             */
+            isJumping = false;
+        }
+        if (transform.position.y <= 0.2f)
+        {
+            jumpTime = 0f;
+            myBody.useGravity = true;
+            
+        }
     }
 
 
@@ -95,27 +137,8 @@ public class Movement : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position,
             new Vector3(newPosition.x, transform.position.y, transform.position.z + (myVelocity/LerpSpeed)),
             Time.deltaTime*LerpSpeed);
-        Jump();
     }
 
-    void Jump()
-    {
-        if ( IsGrounded() && jumpInput > 0) {
-            //give y velocity
-            myBody.velocity = new Vector3( 0, jumpHeight, 0 );
-        }
-        else if (IsGrounded() &&
-                 jumpInput == 0)
-        {
-            //zero out y vel
-            myBody.velocity = new Vector3(0,0,0);
-        }
-        else
-        {
-            //decrease y vel
-            myBody.velocity -= new Vector3( 0, downAccel, 0 );
-        }
-    }
 
     //holds the logic for the player movement
     void PositionChanging()
@@ -156,53 +179,5 @@ public class Movement : MonoBehaviour
                 newPosition = positionA;
             }
         }
-        
-    }
-
-    private bool IsGrounded()
-    {
-
-        var castDistance = .2f;
-
-        var size = .3f;
-        var halfHeight = .1f;
-
-//        return Physics.Raycast(transform.position, Vector3.down, halfHeight, ground);
-
-        var rays = new[]
-        {
-            new Vector3(0, halfHeight, 0),
-            new Vector3(size, halfHeight, size),
-            new Vector3(-size, halfHeight, -size),
-            new Vector3(-size, halfHeight, size),
-            new Vector3(size, halfHeight, -size),
-            new Vector3(0, halfHeight, size),
-            new Vector3(0, halfHeight, -size),
-            new Vector3(-size, halfHeight, 0),
-            new Vector3(size, halfHeight, 0),
-            new Vector3(size/2, halfHeight, size/2),
-            new Vector3(-size/2, halfHeight, -size/2),
-            new Vector3(-size/2, halfHeight, size/2),
-            new Vector3(size/2, halfHeight, -size/2),
-            new Vector3(0, halfHeight, size/2),
-            new Vector3(0, halfHeight, -size/2),
-            new Vector3(-size/2, halfHeight, 0),
-            new Vector3(size/2, halfHeight, 0),
-            new Vector3(size/3, halfHeight, size/3),
-            new Vector3(-size/3, halfHeight, -size/3),
-            new Vector3(-size/3, halfHeight, size/3),
-            new Vector3(size/3, halfHeight, -size/3),
-            new Vector3(0, halfHeight, size/3),
-            new Vector3(0, halfHeight, -size/3),
-            new Vector3(-size/3, halfHeight, 0),
-            new Vector3(size/3, halfHeight, 0),
-        };
-
-        foreach (var ray in rays)
-        {
-            Debug.DrawLine( transform.position - ray, transform.position - ray - (Vector3.down * castDistance) );
-        }
-
-        return rays.Any(ray => Physics.Raycast(transform.position - ray, Vector3.down, castDistance));
     }
 }

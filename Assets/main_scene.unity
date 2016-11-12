@@ -381,12 +381,12 @@ Prefab:
     - target: {fileID: 54000011573454614, guid: 8760b8b2853ce18489c9299e0237a3bc,
         type: 2}
       propertyPath: m_UseGravity
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114000010244124428, guid: 8760b8b2853ce18489c9299e0237a3bc,
         type: 2}
       propertyPath: myVelocity
-      value: 0
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 1000012642680192, guid: 8760b8b2853ce18489c9299e0237a3bc, type: 2}
       propertyPath: m_IsActive
@@ -415,7 +415,7 @@ Prefab:
     - target: {fileID: 114000010244124428, guid: 8760b8b2853ce18489c9299e0237a3bc,
         type: 2}
       propertyPath: JumpSpeed
-      value: 25.12
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 114000010244124428, guid: 8760b8b2853ce18489c9299e0237a3bc,
         type: 2}
@@ -425,12 +425,12 @@ Prefab:
     - target: {fileID: 114000010244124428, guid: 8760b8b2853ce18489c9299e0237a3bc,
         type: 2}
       propertyPath: jumpHeight
-      value: 20
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 114000010244124428, guid: 8760b8b2853ce18489c9299e0237a3bc,
         type: 2}
       propertyPath: downAccel
-      value: 1.88
+      value: 11.15
       objectReference: {fileID: 0}
     - target: {fileID: 65000013673663224, guid: 8760b8b2853ce18489c9299e0237a3bc,
         type: 2}
@@ -441,6 +441,21 @@ Prefab:
         type: 2}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010244124428, guid: 8760b8b2853ce18489c9299e0237a3bc,
+        type: 2}
+      propertyPath: airTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010244124428, guid: 8760b8b2853ce18489c9299e0237a3bc,
+        type: 2}
+      propertyPath: startFallingAfter
+      value: 0.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010244124428, guid: 8760b8b2853ce18489c9299e0237a3bc,
+        type: 2}
+      propertyPath: FloatTime
+      value: 1.19
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114000013331845628, guid: 8760b8b2853ce18489c9299e0237a3bc, type: 2}
